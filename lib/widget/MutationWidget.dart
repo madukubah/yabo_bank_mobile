@@ -5,6 +5,7 @@ import 'package:yabo_bank/model/Mutation.dart';
 class MutationWidget extends StatelessWidget {
   MediaQueryData queryData;
   final Mutation mutation;
+  Color statusColor;
   MutationWidget({@required this.mutation});
   @override
   Widget build(BuildContext context) {
@@ -17,10 +18,16 @@ class MutationWidget extends StatelessWidget {
       fontSize: 8 * devicePixelRatio,
       color: Colors.white,
     );
+
+    if (mutation.position == 1)
+      statusColor = Colors.red;
+    else
+      statusColor = Colors.green;
+
     TextStyle style15 = new TextStyle(
       inherit: true,
       fontSize: 8 * devicePixelRatio,
-      color: Colors.black,
+      color: statusColor,
     );
 
     return Container(
@@ -53,7 +60,11 @@ class MutationWidget extends StatelessWidget {
                   width: MediaQuery.of(context).size.width / 2,
                   child: Text(
                     "${mutation.description}",
-                    style: style15,
+                    style: TextStyle(
+                      inherit: true,
+                      fontSize: 8 * devicePixelRatio,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
                 Column(
