@@ -1,13 +1,10 @@
+import 'package:url_launcher/url_launcher.dart';
 import 'package:yabo_bank/activity/main/presenter/HomePresenter.dart';
 import 'package:yabo_bank/activity/main/view/HomeMVPView.dart';
 import 'package:yabo_bank/activity/mutation/MutationPage.dart';
 import 'package:yabo_bank/activity/request/RequestPage.dart';
-import 'package:yabo_bank/activity/ui/MutationTab.dart';
-import 'package:yabo_bank/activity/ui/RequestTab.dart';
 import 'package:yabo_bank/data/network/AppApiHelper.dart';
 import 'package:yabo_bank/data/preferences/AppPreferenceHelper.dart';
-import 'package:yabo_bank/template/drawer/Menu.dart';
-import 'package:yabo_bank/template/drawer/PlainDrawer.dart';
 import 'package:yabo_bank/util/AppConstants.dart';
 import 'package:flutter/material.dart';
 
@@ -57,6 +54,12 @@ class _HomeState extends State<Home>
         actions: controller.index != 2
             ? null
             : <Widget>[
+                IconButton(
+                  icon: Icon(Icons.phone),
+                  onPressed: () {
+                    showDialogCallCenter();
+                  },
+                ),
                 IconButton(
                   icon: Icon(Icons.close),
                   onPressed: () {
@@ -130,6 +133,46 @@ class _HomeState extends State<Home>
               onPressed: () {
                 presenter.logout();
                 Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> showDialogCallCenter() {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Call Center', style: TextStyle(color: Colors.black)),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                  'Hubungi ?',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                'Batal',
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text('Ok', style: TextStyle(color: Colors.green)),
+              onPressed: () {
+                launch("tel:0811405154");
+                // Navigator.of(context).pop();
               },
             ),
           ],

@@ -15,6 +15,6 @@ class AppConstants
 }
 
 class AppColor{
-  static const Color PRIMARY = Colors.orangeAccent;
+  static const Color PRIMARY = Colors.orange;
   static const Color SECONDARY = Colors.blueAccent;
 }

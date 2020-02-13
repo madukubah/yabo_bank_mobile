@@ -5,7 +5,6 @@ import 'activity/profile/Profile.dart';
 import 'activity/splash/SplashScreen.dart';
 import 'activity/main/Home.dart';
 import 'activity/ui/MainPage.dart';
-import 'activity/ui/ProfileTab.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,8 +13,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Yabo Bank',
+      title: 'SISA',
       theme: ThemeData(
+        fontFamily: 'Ubuntu',
         primarySwatch: Colors.blue,
       ),
       // home: new ProfileTab(),

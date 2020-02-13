@@ -35,11 +35,20 @@ dependencies:
   toast: ^0.1.5
   pull_to_refresh: ^1.4.5
   date_range_picker: ^1.0.5
+  url_launcher: any
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.7.3"
 
+flutter_icons:
+  android: true
+  ios: true
+  image_path_ios: "assets/logo.png"
+  image_path_android: "assets/logo.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/logo.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -58,7 +67,41 @@ flutter:
     - assets/images/user_icon.png
     - assets/images/as.png
     - assets/images/placehoder.jpg
+      
   fonts:
       - family: Nunito
         fonts:
           - asset: assets/Nunito.ttf
+      - family: Ubuntu
+        fonts:
+          - asset: packages/ubuntu_font_flutter/Ubuntu-R.ttf
+          - asset: packages/ubuntu_font_flutter/Ubuntu-RI.ttf
+            style: italic
+          - asset: packages/ubuntu_font_flutter/Ubuntu-B.ttf
+            weight: 700
+          - asset: packages/ubuntu_font_flutter/Ubuntu-BI.ttf
+            weight: 700
+            style: italic
+          - asset: packages/ubuntu_font_flutter/Ubuntu-L.ttf
+            weight: 300
+          - asset: packages/ubuntu_font_flutter/Ubuntu-LI.ttf
+            weight: 300
+            style: italic
+          - asset: packages/ubuntu_font_flutter/Ubuntu-M.ttf
+            weight: 500
+          - asset: packages/ubuntu_font_flutter/Ubuntu-MI.ttf
+            weight: 500
+            style: italic
+      - family: Ubuntu Mono
+        fonts:
+          - asset: packages/ubuntu_font_flutter/UbuntuMono-R.ttf
+          - asset: packages/ubuntu_font_flutter/UbuntuMono-RI.ttf
+            style: italic
+          - asset: packages/ubuntu_font_flutter/UbuntuMono-B.ttf
+            weight: 700
+          - asset: packages/ubuntu_font_flutter/UbuntuMono-BI.ttf
+            weight: 700
+            style: italic
+      - family: Ubuntu Condensed
+        fonts:
+          - asset: packages/ubuntu_font_flutter/Ubuntu-C.ttf

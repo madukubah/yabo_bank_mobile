@@ -109,7 +109,6 @@ class _RegisterPageState extends State<RegisterPage>
           padding: EdgeInsets.only(left: 24.0, right: 24.0),
           children: <Widget>[
             logo,
-            SizedBox(height: 48.0),
             Visibility(
               visible: isMessageShowed,
               child: Center(
