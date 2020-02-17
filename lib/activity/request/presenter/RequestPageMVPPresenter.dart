@@ -5,4 +5,5 @@ abstract class RequestPageMVPPresenter < V extends RequestPageMVPView , I extend
 {
     void getRequests(  );
     void deleteRequests( int requestId );
+    void goToRequestAdd(  );
 }

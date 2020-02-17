@@ -6,6 +6,7 @@ import 'package:yabo_bank/activity/request_add/interactor/RequestAddMVPInteracto
 import 'package:yabo_bank/activity/request_add/view/RequestAddMVPView.dart';
 import 'package:yabo_bank/base/presenter/BasePresenter.dart';
 import 'package:yabo_bank/data/network/response/ApiResponse.dart';
+import 'package:yabo_bank/model/PriceList.dart';
 
 import 'RequestAddMVPPresenter.dart';
 import 'package:image/image.dart' as _image;
@@ -15,22 +16,58 @@ class RequestAddPresenter < V extends RequestAddMVPView , I extends RequestAddMV
 {
   RequestAddPresenter(RequestAddMVPInteractor interactor) : super(interactor);
 
+   @override
+  void getPriceLists() {
+    this.getView().showProgressCircle();  
+    interactor.doGetPriceLists(  ).then( ( ApiResponse response ){
+
+        this.getView().setPriceLists( response.data );  
+        this.getView().hideProgressCircle();  
+    });
+  }
+
   @override
-  void createRequests(dynamic formData, File image) {
-    this.getView().showProgress(  );
+  void createRequests(List<PriceList> priceLists, File image) {
+    
+    if( ! checkPriceList( priceLists ) ){
+      this.getView().showMessage(  'Input Jenis Sampah Beserta Perkiraan Berat !', 0 );
+      return;
+    }
     if( image == null )
     {
-          this.getView().hideProgress(  );
-          this.getView().showMessage(  'Masukkan Gambar', 0 );
-          return;
+      this.getView().showMessage(  'Masukkan Gambar !', 0 );
+      return;
     }
+    Map<String, String> formData = {
+      'info': this.buildInfo(priceLists)
+    };
+    this.getView().showProgress(  );
     interactor.doCreateRequests( formData, image ).then( ( ApiResponse response ){
           this.getView().hideProgress(  );
           if( response.success )   
-            this.getView().showMessage(  response.message, 1 );
+            this.getView().backToRRequestList();
           else
             this.getView().showMessage(  response.message, 0 );
       } );
+  }
+
+  bool checkPriceList( List<PriceList> priceLists ){
+    for (var i = 0; i < priceLists.length; i++) {
+      if( priceLists[i].status == 1 && priceLists[i].quantity > 0 ){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  String buildInfo( List<PriceList> priceLists ){
+    List<String> info = [];
+    for (var i = 0; i < priceLists.length; i++) {
+      if( priceLists[i].status == 1 && priceLists[i].quantity > 0 ){
+        info.add( "${priceLists[i].name} ${priceLists[i].quantity} ${priceLists[i].unit}" ) ;
+      }
+    }
+    return info.join(', ');
   }
 
   @override

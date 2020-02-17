@@ -43,7 +43,7 @@ class ProcessedRequestWidget extends StatelessWidget {
             Row(
               children: <Widget>[
                 Icon(
-                  Icons.airport_shuttle,
+                  Icons.motorcycle,
                   color: Colors.orange,
                 ), 
                 SizedBox(

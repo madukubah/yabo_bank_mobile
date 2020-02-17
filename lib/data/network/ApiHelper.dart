@@ -22,4 +22,7 @@ abstract class ApiHelper
   Future<ApiResponse> performCreateRequests(  dynamic formData, File image );
   Future<ApiResponse> performDeleteRequests(  int requestId );
 
+  Future<ApiResponse> performGetPriceLists(  );
+
+
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:yabo_bank/util/AppConstants.dart';
 
 import 'MyForm.dart';
 
@@ -15,22 +16,26 @@ class MyFormBuilder {
         children: <Widget>[
           Text(
             item.label,
-            style: TextStyle(fontSize: 16.0, color: Colors.black),
+            style: TextStyle(fontSize: 14.0, color: Colors.black54),
           ),
         ],
       );
       switch (item.type) {
         case MyForm.TYPE_TEXT:
           form = FormBuilderTextField(
+            cursorColor: AppColor.PRIMARY,
             readOnly: readonly,
             initialValue: item.value,
             autofocus: item.autofocus,
             attribute: item.name,
-            decoration: ( decorationType == DecorationType.PLAIN ) ? InputDecoration( hintText: item.label, )  : InputDecoration(
+            decoration: ( decorationType == DecorationType.PLAIN ) ? InputDecoration( hintText: item.label,  )  : InputDecoration(
               hintText: item.label,
+              fillColor: AppColor.PRIMARY,
+              focusColor: AppColor.PRIMARY,
+              hoverColor: AppColor.PRIMARY,
               contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
               border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             ),
             validators: [
               FormBuilderValidators.required(),
@@ -39,6 +44,7 @@ class MyFormBuilder {
           break;
         case MyForm.TYPE_TEXTAREA:
           form = FormBuilderTextField(
+            cursorColor: AppColor.PRIMARY,
             keyboardType: TextInputType.multiline,
             maxLines: 5,
             readOnly: readonly,
@@ -47,9 +53,11 @@ class MyFormBuilder {
             attribute: item.name,
             decoration: ( decorationType == DecorationType.PLAIN ) ? InputDecoration( hintText: item.label, )  : InputDecoration(
               hintText: item.label,
+              focusColor: AppColor.PRIMARY,
+              hoverColor: AppColor.PRIMARY,
               contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
               border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             ),
             validators: [
               FormBuilderValidators.required(),
@@ -58,6 +66,7 @@ class MyFormBuilder {
           break;
         case MyForm.TYPE_EMAIL:
           form = FormBuilderTextField(
+            cursorColor: AppColor.PRIMARY,
             readOnly: readonly,
             initialValue: item.value,
             autofocus: item.autofocus,
@@ -65,9 +74,11 @@ class MyFormBuilder {
             attribute: item.name,
             decoration: ( decorationType == DecorationType.PLAIN ) ? InputDecoration( hintText: item.label, )  : InputDecoration(
               hintText: item.label,
+              focusColor: AppColor.PRIMARY,
+              hoverColor: AppColor.PRIMARY,
               contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
               border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             ),
             validators: [
               FormBuilderValidators.required(),
@@ -77,6 +88,7 @@ class MyFormBuilder {
           break;
         case MyForm.TYPE_NUMBER:
           form = FormBuilderTextField(
+            cursorColor: AppColor.PRIMARY,
             readOnly: readonly,
             initialValue: item.value,
             autofocus: item.autofocus,
@@ -84,9 +96,12 @@ class MyFormBuilder {
             attribute: item.name,
             decoration: ( decorationType == DecorationType.PLAIN ) ? InputDecoration( hintText: item.label, )  : InputDecoration(
               hintText: item.label,
+              focusColor: AppColor.PRIMARY,
+              hoverColor: AppColor.PRIMARY,
               contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
               border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(10.0),
+                  ),
             ),
             validators: [
               FormBuilderValidators.required(),
@@ -102,11 +117,14 @@ class MyFormBuilder {
             attribute: item.name,
             maxLines: 1,
             obscureText: true,
+            cursorColor: AppColor.PRIMARY,
             decoration: ( decorationType == DecorationType.PLAIN ) ? InputDecoration( hintText: item.label, )  : InputDecoration(
               hintText: item.label,
+              focusColor: AppColor.PRIMARY,
+              hoverColor: AppColor.PRIMARY,
               contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
               border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
             ),
             validators: [
               FormBuilderValidators.required(),
@@ -124,8 +142,11 @@ class MyFormBuilder {
           break;
       }
       forms.add(SizedBox(height: 8.0));
-      if (isLabeled) forms.add(label);
-      forms.add(form);
+      if (isLabeled) {
+        forms.add(label);
+        forms.add(form);
+        forms.add(SizedBox(height: 8.0));
+      }else forms.add(form);
     }
     return forms;
   }

@@ -1,3 +1,4 @@
+import 'package:url_launcher/url_launcher.dart';
 import 'package:yabo_bank/activity/auth/login/presenter/LoginPresenter.dart';
 import 'package:yabo_bank/activity/auth/login/view/LoginMVPView.dart';
 import 'package:yabo_bank/data/network/AppApiHelper.dart';
@@ -71,7 +72,7 @@ class _LoginPageState extends State<LoginPage> implements LoginMVPView {
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: RaisedButton(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(10),
         ),
         onPressed: () {
           if (_fbKey.currentState.saveAndValidate()) {
@@ -84,16 +85,22 @@ class _LoginPageState extends State<LoginPage> implements LoginMVPView {
           }
         },
         padding: EdgeInsets.all(12),
-        color: Colors.lightBlueAccent,
-        child: Text('Log In', style: TextStyle(color: Colors.white)),
+        color: AppColor.PRIMARY,
+        child: Text('Masuk', style: TextStyle(color: Colors.white)),
       ),
     );
 
-    final forgotLabel = FlatButton(
-      child: Text(
-        'Belum punya akun? Register',
-        style: TextStyle(color: Colors.black54),
-      ),
+    final registerLabel = FlatButton(
+      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Text(
+          'Belum punya akun? ',
+          style: TextStyle(color: Colors.black54),
+        ),
+        Text(
+          'Daftar',
+          style: TextStyle(color: AppColor.PRIMARY),
+        ),
+      ]),
       onPressed: () {
         Navigator.of(context).pushNamed("/RegisterPage");
       },
@@ -101,43 +108,75 @@ class _LoginPageState extends State<LoginPage> implements LoginMVPView {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: Stack(
-          children: <Widget>[
-            ListView(
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Stack(children: [
+          // Positioned(
+          //   bottom: 0,
+          //   child: Container(
+          //     // color: Colors.pink,
+          //     height: MediaQuery.of(context).size.height / 4,
+          //     width: MediaQuery.of(context).size.width,
+          //     decoration: BoxDecoration(
+          //       image: DecorationImage(
+          //           image: AssetImage('assets/images/background.png'),
+          //           fit: BoxFit.cover),
+          //     ),
+          //   ),
+          // ),
+          Container(
+            child: ListView(
               shrinkWrap: true,
               padding: EdgeInsets.only(left: 24.0, right: 24.0),
               children: <Widget>[
-                Center(
-                  child: Text(
-                    '${AppConstants.APP_NAME}',
-                    style: TextStyle(color: Colors.deepOrangeAccent,
-                    fontSize: 14 * devicePixelRatio,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Ubuntu'
-                     )  ,
-                  ),
+                SizedBox(
+                  height: 24,
                 ),
+                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.phone,
+                      color: AppColor.PRIMARY,
+                    ),
+                    onPressed: () {
+                      showDialogCallCenter();
+                    },
+                  ),
+                ]),
+                SizedBox(
+                  height: 42,
+                ),
+                // Center(
+                //   child: Text(
+                //     '${AppConstants.APP_NAME}',
+                //     style: TextStyle(
+                //       color: AppColor.PRIMARY,
+                //       fontSize: 12 * devicePixelRatio,
+                //       fontWeight: FontWeight.bold,
+                //     ),
+                //   ),
+                // ),
                 logo,
-                Center(
-                  child: Text(
-                    'SISTEM INFORMASI',
-                    style: TextStyle(color: Colors.deepOrangeAccent,
-                    fontSize: 12 * devicePixelRatio,
-                    fontFamily: 'Ubuntu'
-                     )  ,
-                  ),
-                ),
-                Center(
-                  child: Text(
-                    'SAMPAH',
-                    style: TextStyle(color: Colors.orangeAccent,
-                    fontSize: 10 * devicePixelRatio,
-                    fontFamily: 'Ubuntu'
-                     )  ,
-                  ),
-                ),
-                SizedBox(height: 8.0),
+                // Center(
+                //   child: Text(
+                //     'SISTEM INFORMASI',
+                //     style: TextStyle(
+                //       color: AppColor.PRIMARY,
+                //       fontSize: 10 * devicePixelRatio,
+                //     ),
+                //   ),
+                // ),
+                // Center(
+                //   child: Text(
+                //     'SAMPAH',
+                //     style: TextStyle(
+                //       color: Colors.black87,
+                //       fontSize: 8 * devicePixelRatio,
+                //     ),
+                //   ),
+                // ),
+                SizedBox(height: 28 ),
                 Visibility(
                   visible: isMessageShowed,
                   child: Center(
@@ -154,13 +193,25 @@ class _LoginPageState extends State<LoginPage> implements LoginMVPView {
                     children: MyFormBuilder().create_forms(dataForm),
                   ),
                 ),
-                SizedBox(height: 24.0),
-                loginButton,
-                forgotLabel
+                // SizedBox(height: 8.0),
+                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  loginButton,
+                ]),
+                registerLabel,
+                Container(
+                  // color: Colors.pink,
+                  height: MediaQuery.of(context).size.height / 4,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/images/background.png'),
+                        fit: BoxFit.fitWidth),
+                  ),
+                ),
               ],
             ),
-          ],
-        ),
+          ),
+        ]),
       ),
     );
   }
@@ -204,5 +255,71 @@ class _LoginPageState extends State<LoginPage> implements LoginMVPView {
   void openMainAvtivity() {
     Navigator.of(context).popUntil((route) => route.isFirst);
     Navigator.of(context).pushReplacementNamed("/Home");
+  }
+
+  Future<void> showDialogCallCenter() {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          title: Row(
+            children: <Widget>[
+              Icon(
+                Icons.call,
+                color: Colors.black,
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              Text(
+                'Call Center',
+                maxLines: 2,
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          // Text('Call Center', style: TextStyle(color: Colors.black)),
+          content: SingleChildScrollView(
+            child: Row(
+              children: <Widget>[
+                Flexible(
+                  child: Text(
+                    'Hubungi ?',
+                    maxLines: 2,
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                'Batal',
+                style: TextStyle(color: Colors.black26),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text('Ok', style: TextStyle(color: AppColor.PRIMARY)),
+              onPressed: () {
+                launch("tel:0811405154");
+                // Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

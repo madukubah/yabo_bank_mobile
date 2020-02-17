@@ -23,4 +23,10 @@ class RequestPageInteractor extends BaseInteractor implements RequestPageMVPInte
               } );
   }
 
+  @override
+  bool customerVerified() {
+    if( preferenceHelper.getCurrentCustomerStatus() == 1 ) return true;
+    else return false;
+  }
+
 }

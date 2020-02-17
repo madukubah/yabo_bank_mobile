@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:yabo_bank/model/Mutation.dart';
+import 'package:yabo_bank/util/AppConstants.dart';
 
 class MutationWidget extends StatelessWidget {
   MediaQueryData queryData;
@@ -17,6 +18,7 @@ class MutationWidget extends StatelessWidget {
       inherit: true,
       fontSize: 8 * devicePixelRatio,
       color: Colors.white,
+      fontWeight:FontWeight.bold
     );
 
     if (mutation.position == 1)
@@ -29,12 +31,16 @@ class MutationWidget extends StatelessWidget {
       fontSize: 8 * devicePixelRatio,
       color: statusColor,
     );
-
+    var timeFormatter = new DateFormat('dd MMM yyyy');
+    DateTime date = DateFormat("yyyy-MM-dd", "en_US").parse("${mutation.created_at.split(" ")[0]}");
     return Container(
-        child: Column(
+      child: Column(
       children: <Widget>[
         Container(
-          color: Colors.blueGrey,
+          decoration: BoxDecoration(
+          color: Color.fromARGB(255, 158, 155, 152),
+          // borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -42,7 +48,7 @@ class MutationWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "${mutation.created_at.split(" ")[0]}",
+                  "${timeFormatter.format(date)}",
                   style: style15White,
                 ),
               ],

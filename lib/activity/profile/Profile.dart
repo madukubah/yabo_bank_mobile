@@ -13,6 +13,7 @@ import 'package:yabo_bank/template/form/MyFormBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:yabo_bank/util/AppConstants.dart';
 import 'interactor/ProfileMVPInteractor.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -48,11 +49,12 @@ class _ProfileState extends State<Profile>
     super.initState();
     presenter.onAttach(this);
     presenter.getUser();
-    // requestWritePermission();
+    requestWritePermission();
   }
 
   requestWritePermission() async {
-    PermissionStatus permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
+    PermissionStatus permission = await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.storage);
     if (permission == PermissionStatus.granted) {
       setState(() {
         _allowWriteFile = true;
@@ -84,18 +86,16 @@ class _ProfileState extends State<Profile>
     );
     return new Scaffold(
       body: RefreshIndicator(
-          onRefresh: () async {
-              presenter.getUser();
-          },
+        onRefresh: () async {
+          presenter.getUser();
+        },
         child: new Container(
-          color: Colors.white,
+          color: Color.fromARGB(255, 250, 247, 245),
           child: new ListView(
             children: <Widget>[
               Column(
                 children: <Widget>[
                   new Container(
-                    height: 200.0,
-                    color: Colors.white,
                     child: new Column(
                       children: <Widget>[
                         Padding(
@@ -120,17 +120,18 @@ class _ProfileState extends State<Profile>
                                                     "/$imageProfile"),
                                         fit: BoxFit.cover,
                                       ),
-                                    )),
+                                    ),),
                               ],
                             ),
                             Padding(
-                                padding: EdgeInsets.only(top: 90.0, right: 100.0),
+                                padding:
+                                    EdgeInsets.only(top: 90.0, right: 100.0),
                                 child: new Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     FlatButton(
                                       child: new CircleAvatar(
-                                        backgroundColor: Colors.blue,
+                                        backgroundColor: AppColor.PRIMARY,
                                         radius: 25.0,
                                         child: new Icon(
                                           Icons.camera_alt,
@@ -138,7 +139,8 @@ class _ProfileState extends State<Profile>
                                         ),
                                       ),
                                       onPressed: () {
-                                       _openImagePickerModal( context, PROFILE_PHOTO );
+                                        _openImagePickerModal(
+                                            context, PROFILE_PHOTO);
                                       },
                                     )
                                   ],
@@ -150,10 +152,10 @@ class _ProfileState extends State<Profile>
                   ),
                   message //Message from api
                   ,
+                  SizedBox(height: 12),
                   new Container(
-                    color: Color(0xffFFFFFF),
                     child: Padding(
-                      padding: EdgeInsets.only(bottom: 25.0),
+                      padding: EdgeInsets.only(bottom: 0.0),
                       child: userLoad
                           ? new Center(
                               child: new Padding(
@@ -162,115 +164,130 @@ class _ProfileState extends State<Profile>
                                 child: new CircularProgressIndicator(),
                               ),
                             )
-                          : new Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 25.0, right: 25.0, top: 25.0),
-                                  child: new Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: <Widget>[
-                                      new Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          new Text(
-                                            'Informasi Akun',
-                                            style: TextStyle(
-                                                fontSize: 18.0,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ),
-                                      new Column(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          _status
-                                              ? _getEditIcon()
-                                              : new Container(),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      EdgeInsets.only(left: 24.0, right: 24.0),
-                                  child: Column(
-                                    children: <Widget>[
-                                      FormBuilder(
-                                        key: _fbKey,
-                                        autovalidate: false,
-                                        child: Column(
-                                          children: MyFormBuilder().create_forms(
-                                              dataForm,
-                                              isLabeled: true,
-                                              decorationType:
-                                                  DecorationType.PLAIN,
-                                              readonly: _status),
+                          : Container(
+                              color: Colors.white,
+                              child: new Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  SizedBox(height: 12),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 18.0, right: 18.0),
+                                    child: new Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: <Widget>[
+                                        new Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            new Text(
+                                              'Informasi Akun',
+                                              style: TextStyle(
+                                                  fontSize: 18.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black54),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                !_status ? _getActionButtons() : new Container(),
-                                SizedBox(height: 16.0),
-                                Center(
-                                  child: Text(
-                                    'Foto KTP',
-                                    style: style15,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: this.identityPhotoFile == null
-                                      ? Image.network(
-                                          ApiEndPoint.CUSTOMER_IDENTITY_PHOTO +
-                                              "/$identityPhoto",
-                                          fit: BoxFit.cover,
-                                          height: 200.0,
-                                          alignment: Alignment.topCenter,
-                                          width:
-                                              MediaQuery.of(context).size.width,
+                                        new Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            _status
+                                                ? _getEditIcon()
+                                                : new Container(),
+                                          ],
                                         )
-                                      : Image.file(
-                                          identityPhotoFile,
-                                          fit: BoxFit.cover,
-                                          height: 200.0,
-                                          alignment: Alignment.topCenter,
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                        ),
-                                ),
-                                SizedBox(height: 8.0),
-                                Center(
-                                  child: RaisedButton(
-                                    color: Colors.blue,
-                                    child: Text(
-                                      'Ganti KTP',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
+                                      ],
                                     ),
-                                    shape: new RoundedRectangleBorder(
-                                        borderRadius:
-                                            new BorderRadius.circular(20.0)),
-                                    onPressed: () {
-                                      _openImagePickerModal( context, IDENTITY_PHOTO );
-                                      print("CAMERA");
-                                    },
                                   ),
-                                ),
-                              ],
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 18.0, right: 18.0),
+                                    child: Column(
+                                      children: <Widget>[
+                                        FormBuilder(
+                                          key: _fbKey,
+                                          autovalidate: false,
+                                          child: Column(
+                                            children: MyFormBuilder()
+                                                .create_forms(dataForm,
+                                                    isLabeled: true,
+                                                    decorationType:
+                                                        DecorationType.PLAIN,
+                                                    readonly: _status),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  !_status
+                                      ? _getActionButtons()
+                                      : new Container(),
+                                  SizedBox(height: 16.0),
+                                ],
+                              ),
                             ),
                     ),
-                  )
+                  ),
+                  SizedBox(height: 8.0),
+                  Center(
+                    child: Text(
+                      'Foto KTP',
+                      style: TextStyle(
+                          fontSize: 18.0,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  SizedBox(height: 8.0),
+                  Center(
+                    child: Stack(children: <Widget>[
+                      Container(
+                        width: 250.0,
+                        height: 150.0,
+                        decoration: new BoxDecoration(
+                          // shape: BoxShape.circle,
+                          borderRadius: BorderRadius.circular(10),
+                          image: new DecorationImage(
+                            image: (identityPhotoFile != null)
+                                ? new Image.file(identityPhotoFile)
+                                : new NetworkImage(
+                                    ApiEndPoint.CUSTOMER_IDENTITY_PHOTO +
+                                        "/$identityPhoto"),
+                            fit: BoxFit.fitWidth,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        top: 0,
+                        child: FlatButton(
+                          child: new CircleAvatar(
+                            backgroundColor: AppColor.PRIMARY,
+                            radius: 25.0,
+                            child: new Icon(
+                              Icons.camera_alt,
+                              color: Colors.white,
+                            ),
+                          ),
+                          onPressed: () {
+                            _openImagePickerModal(context, IDENTITY_PHOTO);
+                          },
+                        ),
+                      ),
+                    ]),
+                  ),
+                  SizedBox(height: 16.0),
                 ],
               ),
             ],
@@ -282,57 +299,38 @@ class _ProfileState extends State<Profile>
 
   Widget _getActionButtons() {
     return Padding(
-      padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 45.0),
+      padding: EdgeInsets.only(left: 25.0, right: 25.0),
       child: new Row(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(right: 10.0),
-              child: Container(
-                  child: new RaisedButton(
-                child: new Text("Simpan"),
-                textColor: Colors.white,
-                color: Colors.green,
-                onPressed: () {
-                  // return;
-                  setState(() {
-                    if (_fbKey.currentState.saveAndValidate()) {
-                      print(_fbKey.currentState.value);
-                      this.presenter.updateUser(_fbKey.currentState.value);
-                    } else {
-                      print(_fbKey.currentState.value);
-                      print("validation failed");
-                    }
-                    FocusScope.of(context).requestFocus(new FocusNode());
-                  });
-                },
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0)),
-              )),
+          FlatButton(
+            child: Text(
+              'Kembali',
+              style: TextStyle(color: Colors.black26),
             ),
-            flex: 2,
+            onPressed: () {
+              setState(() {
+                _status = true;
+                FocusScope.of(context).requestFocus(new FocusNode());
+              });
+            },
           ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(left: 10.0),
-              child: Container(
-                  child: new RaisedButton(
-                child: new Text("Kembali"),
-                textColor: Colors.white,
-                color: Colors.red,
-                onPressed: () {
-                  setState(() {
-                    _status = true;
-                    FocusScope.of(context).requestFocus(new FocusNode());
-                  });
-                },
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0)),
-              )),
-            ),
-            flex: 2,
+          RaisedButton(
+            color: AppColor.PRIMARY,
+            child: Text('Simpan', style: TextStyle(color: Colors.white)),
+            onPressed: () {
+              setState(() {
+                if (_fbKey.currentState.saveAndValidate()) {
+                  print(_fbKey.currentState.value);
+                  this.presenter.updateUser(_fbKey.currentState.value);
+                } else {
+                  print(_fbKey.currentState.value);
+                  print("validation failed");
+                }
+                FocusScope.of(context).requestFocus(new FocusNode());
+              });
+            },
           ),
         ],
       ),
@@ -342,7 +340,7 @@ class _ProfileState extends State<Profile>
   Widget _getEditIcon() {
     return new GestureDetector(
       child: new CircleAvatar(
-        backgroundColor: Colors.blue,
+        backgroundColor: AppColor.PRIMARY,
         radius: 14.0,
         child: new Icon(
           Icons.edit,
@@ -424,41 +422,42 @@ class _ProfileState extends State<Profile>
       this._status = true;
     });
   }
-  void sendImageProfile( ImageSource source ){
 
-    imageHandler.getImage(source, 
-      start:(){
+  void sendImageProfile(ImageSource source) {
+    imageHandler.getImage(
+      source,
+      start: () {
         this.showProgressCircle();
-      } ,
-      success:( File image ){
+      },
+      success: (File image) {
         this.hideProgressCircle();
         presenter.uploadImage(image);
-      } ,
-      failed:( String message ){
+      },
+      failed: (String message) {
         this.hideProgressCircle();
-        this.showMessage( message, 0);
-      } ,
+        this.showMessage(message, 0);
+      },
     );
   }
 
-  void sendImageIdentity( ImageSource source ){
-
-    imageHandler.getImage(source, 
-      start:(){
+  void sendImageIdentity(ImageSource source) {
+    imageHandler.getImage(
+      source,
+      start: () {
         this.showProgressCircle();
-      } ,
-      success:( File image ){
+      },
+      success: (File image) {
         this.hideProgressCircle();
         presenter.uploadIdentityPhoto(image);
-      } ,
-      failed:( String message ){
+      },
+      failed: (String message) {
         this.hideProgressCircle();
-        this.showMessage( message, 0);
-      } ,
+        this.showMessage(message, 0);
+      },
     );
   }
 
-  void _openImagePickerModal(BuildContext context, int imageType ) {
+  void _openImagePickerModal(BuildContext context, int imageType) {
     final flatButtonColor = Theme.of(context).primaryColor;
     print('Image Picker Modal Called');
     showModalBottomSheet(
@@ -481,13 +480,12 @@ class _ProfileState extends State<Profile>
                   child: Text('Gunakan Kamera'),
                   onPressed: () {
                     Navigator.pop(context);
-                    switch( imageType )
-                    {
-                      case PROFILE_PHOTO :
-                        sendImageProfile( ImageSource.camera );
+                    switch (imageType) {
+                      case PROFILE_PHOTO:
+                        sendImageProfile(ImageSource.camera);
                         break;
-                      case IDENTITY_PHOTO :
-                        sendImageIdentity( ImageSource.camera );
+                      case IDENTITY_PHOTO:
+                        sendImageIdentity(ImageSource.camera);
                         break;
                     }
                   },
@@ -497,13 +495,12 @@ class _ProfileState extends State<Profile>
                   child: Text('Buka Galeri'),
                   onPressed: () {
                     Navigator.pop(context);
-                    switch( imageType )
-                    {
-                      case PROFILE_PHOTO :
-                        sendImageProfile( ImageSource.gallery );
+                    switch (imageType) {
+                      case PROFILE_PHOTO:
+                        sendImageProfile(ImageSource.gallery);
                         break;
-                      case IDENTITY_PHOTO :
-                        sendImageIdentity( ImageSource.gallery );
+                      case IDENTITY_PHOTO:
+                        sendImageIdentity(ImageSource.gallery);
                         break;
                     }
                   },

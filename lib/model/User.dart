@@ -10,6 +10,7 @@ class User {
   final String map_point;
   final String userable_type;
   final int userable_id;
+  final int status;
   final String token;
 
   User(
@@ -25,6 +26,7 @@ class User {
         this.map_point,
         this.userable_type,
         this.userable_id,
+        this.status,
         this.token,
       });
 
@@ -40,5 +42,6 @@ class User {
         map_point       = map['map_point'] ,
         userable_type   = map['userable_type'] ,
         userable_id     = map['userable_id'] ,
+        status          = ( map['status'] == null ) ? null: map['status'] ,
         token           = map['token'] ;
 }

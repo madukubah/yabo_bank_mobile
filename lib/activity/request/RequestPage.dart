@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:yabo_bank/activity/request_add/RequestAdd.dart';
 import 'package:yabo_bank/model/ProcessedRequest.dart';
 import 'package:yabo_bank/model/Request.dart';
+import 'package:yabo_bank/util/AppConstants.dart';
 import 'package:yabo_bank/widget/ProcessedRequestWidget.dart';
 import 'package:yabo_bank/widget/RequestWidget.dart';
 
@@ -18,12 +19,14 @@ class RequestPage extends StatefulWidget {
 }
 
 class _RequestPageState extends State<RequestPage>
+    with SingleTickerProviderStateMixin
     implements RequestPageMVPView {
   RequestPagePresenter<RequestPageMVPView, RequestPageMVPInteractor> presenter;
   bool _isLoading = true;
 
   List<Request> requests;
   List<ProcessedRequest> processedRequests;
+  TabController tabController;
 
   _RequestPageState() {
     RequestPageInteractor interactor = RequestPageInteractor(
@@ -38,6 +41,7 @@ class _RequestPageState extends State<RequestPage>
     presenter.onAttach(this);
     super.initState();
     presenter.getRequests();
+    tabController = TabController(length: 2, vsync: this);
   }
 
   MediaQueryData queryData;
@@ -73,89 +77,183 @@ class _RequestPageState extends State<RequestPage>
     else
       return Scaffold(
         body: RefreshIndicator(
-          onRefresh: () async {
-                presenter.getRequests();
-          },
-          child: Container(
-            // height: MediaQuery.of(context).size.height,
-            child: CustomScrollView(
-              slivers: <Widget>[
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      Padding(
-                        padding: const EdgeInsets.all(0.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              color: Colors.blueGrey,
-                              width: MediaQuery.of(context).size.width,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Penjemputan",
-                                  style: style15White,
-                                ),
-                              ),
-                            ),
-                            // unprocess req
-                            Column(
-                              children: requests.map((i) {
-                                return Builder(builder: (BuildContext context) {
-                                  return RequestWidget( 
-                                    request : i ,
-                                    onTap : ( Request request ){
-                                        showDialogDelete( request ) ;
-                                    } ,
-                                  );
-                                });
-                              }).toList(),
-                            ),
-                            SizedBox(
-                              height: 12,
-                            ),
-                            ///
-                            Container(
-                              color: Colors.blueGrey,
-                              width: MediaQuery.of(context).size.width,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Penjemputan Dikonfirmasi",
-                                  style: style15White,
-                                ),
-                              ),
-                            ),
-                            Column(
-                              children: processedRequests.map((i) {
-                                return Builder(builder: (BuildContext context) {
-                                  return ProcessedRequestWidget( request : i );
-                                });
-                              }).toList(),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+            onRefresh: () async {
+              presenter.getRequests();
+            },
+            child: Column(children: [
+              Container(
+                color: Color.fromARGB(255, 246, 223, 208),
+                child: TabBar(
+                  unselectedLabelColor: Color.fromARGB(255, 158, 155, 152),
+                  labelColor: AppColor.PRIMARY,
+                  controller: tabController,
+                  indicatorColor: AppColor.PRIMARY,
+                  tabs: [
+                    Tab(
+                      // text: "Jemput",
+                      icon: (requests.length == 0)
+                          ? Icon(Icons.list)
+                          : new Stack(
+                              alignment: AlignmentDirectional.center,
+                              children: <Widget>[
+                                  SizedBox(width: 60),
+                                  new Icon(Icons.list),
+                                  new Positioned(
+                                    left: 40.0,
+                                    child: new Stack(
+                                      alignment: AlignmentDirectional.center,
+                                      children: <Widget>[
+                                        new Icon(Icons.brightness_1,
+                                            size: 18.0,
+                                            color: AppColor.PRIMARY),
+                                        Center(
+                                          child: new Text('${requests.length}',
+                                              style: new TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 13.0,
+                                                  fontWeight: FontWeight.w500)),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ]),
+                    ),
+                    Tab(
+                      // text: "Terkonfirmasi",
+                      icon: (processedRequests.length == 0)
+                          ? Icon(Icons.thumb_up)
+                          : new Stack(
+                              alignment: AlignmentDirectional.center,
+                              children: <Widget>[
+                                  SizedBox(width: 60),
+                                  new Icon(Icons.thumb_up),
+                                  new Positioned(
+                                    left: 40.0,
+                                    child: new Stack(
+                                      alignment: AlignmentDirectional.center,
+                                      children: <Widget>[
+                                        new Icon(Icons.brightness_1,
+                                            size: 18.0,
+                                            color: AppColor.PRIMARY),
+                                        Center(
+                                          child: new Text(
+                                              '${processedRequests.length}',
+                                              style: new TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 13.0,
+                                                  fontWeight: FontWeight.w500)),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ]),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        ),
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height * 4 / 6,
+                child: TabBarView(
+                  physics: NeverScrollableScrollPhysics(),
+                  // Add tabs as widgets
+                  children: <Widget>[
+                    RefreshIndicator(
+                      onRefresh: () async {
+                        presenter.getRequests();
+                      },
+                      child: requests.length == 0
+                          ? Center(child: Text('Tidak Ada Data'))
+                          : CustomScrollView(
+                              slivers: <Widget>[
+                                SliverList(
+                                  delegate: SliverChildListDelegate(
+                                    [
+                                      Padding(
+                                        padding: const EdgeInsets.all(0.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: <Widget>[
+                                            // unprocess req
+                                            Column(
+                                              children: requests.map((i) {
+                                                return Builder(builder:
+                                                    (BuildContext context) {
+                                                  return RequestWidget(
+                                                    request: i,
+                                                    onTap: (Request request) {
+                                                      showDialogDelete(request);
+                                                    },
+                                                  );
+                                                });
+                                              }).toList(),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                    )
+                    /////////////////////////////////////
+                    ,
+                    /////////////////////////////////////////
+                    RefreshIndicator(
+                      onRefresh: () async {
+                        presenter.getRequests();
+                      },
+                      child: processedRequests.length == 0
+                          ? Center(child: Text('Tidak Ada Data'))
+                          : CustomScrollView(
+                              slivers: <Widget>[
+                                SliverList(
+                                  delegate: SliverChildListDelegate(
+                                    [
+                                      Padding(
+                                        padding: const EdgeInsets.all(0.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: <Widget>[
+                                            Column(
+                                              children:
+                                                  processedRequests.map((i) {
+                                                return Builder(builder:
+                                                    (BuildContext context) {
+                                                  return ProcessedRequestWidget(
+                                                      request: i);
+                                                });
+                                              }).toList(),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                    )
+                  ],
+                  // set the controller
+                  controller: tabController,
+                ),
+              ),
+            ])),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {  
-              goToRequestAdd(  );
+          onPressed: () {
+            presenter.goToRequestAdd();
           },
-          backgroundColor: Colors.blue,
+          backgroundColor: AppColor.PRIMARY,
           tooltip: 'Increment',
           child: Icon(Icons.add),
         ),
       );
   }
 
-  void goToRequestAdd(  ) async {
+  void goToRequestAdd() async {
     // print("$itemId");
     final result = await Navigator.push(
       context,
@@ -163,8 +261,7 @@ class _RequestPageState extends State<RequestPage>
         builder: (context) => RequestAdd(),
       ),
     );
-    if( result != null )
-      presenter.getRequests();
+    if (result != null) presenter.getRequests();
   }
 
   @override
@@ -200,19 +297,25 @@ class _RequestPageState extends State<RequestPage>
     });
   }
 
-  Future<void> showDialogDelete( Request request ) {
+  Future<void> showDialogDelete(Request request) {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15.0))),
           title: Text('Hapus Penjemputan'),
           content: SingleChildScrollView(
-            child: ListBody(
+            child: Row(
               children: <Widget>[
-                Text(
-                  'Apakah anda yakin ?',
-                  style: TextStyle(color: Colors.black),
+                Flexible(
+                  child: Text(
+                    'Apakah anda yakin ?',
+                    maxLines: 2,
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -221,17 +324,17 @@ class _RequestPageState extends State<RequestPage>
             FlatButton(
               child: Text(
                 'Batal',
-                style: TextStyle(color: Colors.red),
+                style: TextStyle(color: Colors.black26),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             FlatButton(
-              child: Text('Ok', style: TextStyle(color: Colors.green)),
+              child: Text('Ok', style: TextStyle(color: AppColor.PRIMARY)),
               onPressed: () {
                 Navigator.of(context).pop();
-                presenter.deleteRequests( request.id );
+                presenter.deleteRequests(request.id);
               },
             ),
           ],
@@ -245,4 +348,39 @@ class _RequestPageState extends State<RequestPage>
     presenter.getRequests();
   }
 
+  @override
+  void openRequestAdd() {
+    goToRequestAdd();
+  }
+
+  @override
+  Future<void> showModalNotVerified() {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Belum Terverifikasi'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                  'Mohon untuk mengupload foto KTP',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Ok', style: TextStyle(color: Colors.green)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

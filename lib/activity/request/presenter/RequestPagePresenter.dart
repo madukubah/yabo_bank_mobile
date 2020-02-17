@@ -39,4 +39,13 @@ class RequestPagePresenter < V extends RequestPageMVPView , I extends RequestPag
       } );
 
   }
+
+  @override
+  void goToRequestAdd() {
+    if( interactor.customerVerified() )
+      this.getView().openRequestAdd(  );
+    else
+      this.getView().showModalNotVerified(  );
+
+  }
 }

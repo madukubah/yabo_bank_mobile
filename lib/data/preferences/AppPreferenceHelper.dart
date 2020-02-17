@@ -25,6 +25,8 @@ class AppPreferenceHelper extends PreferenceHelper
   static const PREF_KEY_CURRENT_USER_LNAME = "PREF_KEY_CURRENT_USER_LNAME";
   static const PREF_KEY_CURRENT_USER_GROUP_NAME = "PREF_KEY_CURRENT_USER_GROUP_NAME";
 
+  static const PREF_KEY_CURRENT_CUSTOMER_STATUS = "PREF_KEY_CURRENT_CUSTOMER_STATUS";
+
   // Future<SharedPreferences> sharedPreferences = SharedPreferences.getInstance();
   SharedPreferences sharedPreferences;
 
@@ -211,6 +213,17 @@ class AppPreferenceHelper extends PreferenceHelper
   @override
   void setCurrentUserableId(int userableId) {
     sharedPreferences.setInt(PREF_KEY_CURRENT_USER_ABLE_ID, userableId);
+  }
+
+  @override
+  int getCurrentCustomerStatus() {
+      return sharedPreferences.getInt( PREF_KEY_CURRENT_CUSTOMER_STATUS );    
+
+  }
+
+  @override
+  void setCurrentCustomerStatus(int status) {
+    sharedPreferences.setInt(PREF_KEY_CURRENT_CUSTOMER_STATUS, status);
   }
   
 }

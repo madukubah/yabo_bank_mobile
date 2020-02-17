@@ -33,7 +33,7 @@ class RequestWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Container(
-              width: MediaQuery.of(context).size.width / 2,
+              width: MediaQuery.of(context).size.width / 2 + 50,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start ,
                 crossAxisAlignment: CrossAxisAlignment.start,

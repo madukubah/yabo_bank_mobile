@@ -51,6 +51,7 @@ class _HomeState extends State<Home>
       appBar: new AppBar(
         backgroundColor: AppColor.PRIMARY,
         title: new Text("${AppConstants.APP_NAME}"),
+        centerTitle: true,
         actions: controller.index != 2
             ? null
             : <Widget>[
@@ -69,33 +70,51 @@ class _HomeState extends State<Home>
               ],
       ),
       body: TabBarView(
+        // physics: NeverScrollableScrollPhysics(),
         // Add tabs as widgets
         children: <Widget>[MutationPage(), RequestPage(), Profile()],
         // set the controller
         controller: controller,
       ),
-      bottomNavigationBar: Material(
-        // set the color of the bottom navigation bar
-        color: AppColor.PRIMARY,
-        // set the tab bar as the child of bottom navigation bar
-        child: TabBar(
-          tabs: <Tab>[
-            Tab(
-              // set icon to the tab
-              icon: Icon(Icons.credit_card),
-              text: 'Mutasi',
-            ),
-            Tab(
-              icon: Icon(Icons.airport_shuttle),
-              text: 'Penjemputan',
-            ),
-            Tab(
-              icon: Icon(Icons.person),
-              text: 'Profil',
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            new BoxShadow(
+              color: Colors.grey,
+              blurRadius: 10.0,
             ),
           ],
-          // setup the controller
-          controller: controller,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+          child: BottomNavigationBar(
+            // type : BottomNavigationBarType.shifting,
+            // fixedColor: Color.fromARGB(255, 250, 247, 245),
+            backgroundColor: Color.fromARGB(255, 250, 247, 245),
+            unselectedItemColor: Color.fromARGB(255, 158, 155, 152),
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.credit_card),
+                title: Text('Mutasi'),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.motorcycle),
+                title: Text('Penjemputan'),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                title: Text('Profil'),
+              ),
+            ],
+            currentIndex: controller.index,
+            selectedItemColor: AppColor.PRIMARY,
+            onTap: (int index){
+              controller.index = index;
+            },
+          ),
         ),
       ),
     );
@@ -104,16 +123,30 @@ class _HomeState extends State<Home>
   Future<void> showDialogLogout() {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      // barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Keluar', style: TextStyle(color: Colors.black)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          title: Text(
+                'Keluar',
+                maxLines: 2,
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+              ),
           content: SingleChildScrollView(
-            child: ListBody(
+            child: Row(
               children: <Widget>[
-                Text(
-                  'Apakah anda yakin ?',
-                  style: TextStyle(color: Colors.black),
+                Flexible(
+                  child: Text(
+                    'Apakah Anda Yakin ?',
+                    maxLines: 2,
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -122,14 +155,14 @@ class _HomeState extends State<Home>
             FlatButton(
               child: Text(
                 'Batal',
-                style: TextStyle(color: Colors.red),
+                style: TextStyle(color: Colors.black26),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             FlatButton(
-              child: Text('Ok', style: TextStyle(color: Colors.green)),
+              child: Text('Ok', style: TextStyle(color: AppColor.PRIMARY)),
               onPressed: () {
                 presenter.logout();
                 Navigator.of(context).pop();
@@ -144,16 +177,42 @@ class _HomeState extends State<Home>
   Future<void> showDialogCallCenter() {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      // barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Call Center', style: TextStyle(color: Colors.black)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          title: Row(
+            children: <Widget>[
+              Icon(
+                Icons.call,
+                color: Colors.black,
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              Text(
+                'Call Center',
+                maxLines: 2,
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          // Text('Call Center', style: TextStyle(color: Colors.black)),
           content: SingleChildScrollView(
-            child: ListBody(
+            child: Row(
               children: <Widget>[
-                Text(
-                  'Hubungi ?',
-                  style: TextStyle(color: Colors.black),
+                Flexible(
+                  child: Text(
+                    'Hubungi ?',
+                    maxLines: 2,
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -162,14 +221,14 @@ class _HomeState extends State<Home>
             FlatButton(
               child: Text(
                 'Batal',
-                style: TextStyle(color: Colors.red),
+                style: TextStyle(color: Colors.black26),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             FlatButton(
-              child: Text('Ok', style: TextStyle(color: Colors.green)),
+              child: Text('Ok', style: TextStyle(color: AppColor.PRIMARY)),
               onPressed: () {
                 launch("tel:0811405154");
                 // Navigator.of(context).pop();

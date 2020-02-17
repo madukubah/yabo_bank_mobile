@@ -47,5 +47,8 @@ abstract class PreferenceHelper {
 
   int getCurrentUserableId(  );
   void setCurrentUserableId( int userableId );
+
+  int getCurrentCustomerStatus(  );
+  void setCurrentCustomerStatus( int status );
   
 }

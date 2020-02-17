@@ -5,6 +5,8 @@ import 'activity/profile/Profile.dart';
 import 'activity/splash/SplashScreen.dart';
 import 'activity/main/Home.dart';
 import 'activity/ui/MainPage.dart';
+import 'activity/ui/MapSample.dart';
+import 'util/AppConstants.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,9 +18,11 @@ class MyApp extends StatelessWidget {
       title: 'SISA',
       theme: ThemeData(
         fontFamily: 'Ubuntu',
-        primarySwatch: Colors.blue,
+        // focusColor: AppColor.PRIMARY,
+        // hoverColor: AppColor.PRIMARY,
+        primarySwatch: Colors.deepOrange,
       ),
-      // home: new ProfileTab(),
+      // home: new MapSample(),
       home: new SplashScreen(),
       routes: <String, WidgetBuilder>{
         '/Home': (BuildContext context) => new Home(  ) ,

@@ -36,6 +36,9 @@ dependencies:
   pull_to_refresh: ^1.4.5
   date_range_picker: ^1.0.5
   url_launcher: any
+  google_maps_flutter: ^0.5.22+3
+  flutter_google_places: ^0.2.4
+  location: ^2.4.0
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +70,7 @@ flutter:
     - assets/images/user_icon.png
     - assets/images/as.png
     - assets/images/placehoder.jpg
+    - assets/images/background.png
       
   fonts:
       - family: Nunito

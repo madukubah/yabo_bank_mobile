@@ -7,6 +7,7 @@ import 'package:yabo_bank/template/form/MyForm.dart';
 import 'package:yabo_bank/template/form/MyFormBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:yabo_bank/util/AppConstants.dart';
 
 import 'interactor/RegisterMVPInteractor.dart';
 
@@ -43,12 +44,12 @@ class _RegisterPageState extends State<RegisterPage>
     MyForm(
         type: MyForm.TYPE_PASSWORD,
         name: "password",
-        label: "Password",
+        label: "Kata Sandi",
         value: ""),
     MyForm(
         type: MyForm.TYPE_PASSWORD,
         name: "c_password",
-        label: "Konfirmasi Password",
+        label: "Konfirmasi Kata Sandi",
         value: ""),
   ];
   bool isMessageShowed = false;
@@ -84,7 +85,7 @@ class _RegisterPageState extends State<RegisterPage>
       child: RaisedButton(
         // isButtonDisabled : true,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(10),
         ),
         onPressed: () {
                 if (_fbKey.currentState.saveAndValidate()) {
@@ -96,19 +97,44 @@ class _RegisterPageState extends State<RegisterPage>
                 }
               },
         padding: EdgeInsets.all(12),
-        color: Colors.lightBlueAccent,
-        child: Text('Register', style: TextStyle(color: Colors.white)),
+        color: AppColor.PRIMARY,
+        child: Text('Daftar', style: TextStyle(color: Colors.white)),
       ),
+    );
+
+    final registerLabel = FlatButton(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center ,
+        children: [
+        Text(
+          'Sudah punya akun? ',
+          style: TextStyle(color: Colors.black54),
+        ),
+        Text(
+          'Masuk',
+          style: TextStyle(color: AppColor.PRIMARY),
+        ),
+      ]),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
     );
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: new AppBar(
+        backgroundColor: AppColor.PRIMARY,
+        title: new Text("Daftar"),
+        centerTitle: true,
+        automaticallyImplyLeading: false
+      ),
       body: Center(
         child: ListView(
           shrinkWrap: true,
           padding: EdgeInsets.only(left: 24.0, right: 24.0),
           children: <Widget>[
             logo,
+            SizedBox(height: 28 ),
             Visibility(
               visible: isMessageShowed,
               child: Center(
@@ -123,11 +149,12 @@ class _RegisterPageState extends State<RegisterPage>
               autovalidate: false,
               child: Column(
                 children:
-                    MyFormBuilder().create_forms(dataForm, isLabeled: true),
+                    MyFormBuilder().create_forms(dataForm, isLabeled: false),
               ),
             ),
-            SizedBox(height: 24.0),
+            // SizedBox(height: 6.0),
             submitButton,
+            registerLabel
           ],
         ),
       ),

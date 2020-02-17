@@ -8,4 +8,6 @@ abstract class RequestPageMVPView extends MVPView {
   void setRequests( List<Request> items );
   void setProcessedRequests( List<ProcessedRequest> items );
   void refresh(  );
+  void openRequestAdd(  );
+  Future<void> showModalNotVerified(  );
 }

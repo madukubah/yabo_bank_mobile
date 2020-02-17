@@ -15,6 +15,7 @@ class AppConstants
 }
 
 class AppColor{
-  static const Color PRIMARY = Colors.orange;
+  static const Color PRIMARY_DARK = Color.fromARGB(255, 213, 82, 9); //3
+  static const Color PRIMARY = Color.fromARGB(255, 226, 116, 41); //2
   static const Color SECONDARY = Colors.blueAccent;
 }

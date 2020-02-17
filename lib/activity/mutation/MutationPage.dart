@@ -38,12 +38,11 @@ class _MutationPageState extends State<MutationPage>
   @override
   void initState() {
     presenter.onAttach(this);
-     startDate = new DateTime.now().subtract( new Duration( days : 30 ) )  ;
-     endDate = new DateTime.now() ;
+    startDate = new DateTime.now().subtract(new Duration(days: 30));
+    endDate = new DateTime.now();
 
-    presenter.getMutations( startDate, endDate );
+    presenter.getMutations(startDate, endDate);
     super.initState();
-
   }
 
   MediaQueryData queryData;
@@ -58,11 +57,13 @@ class _MutationPageState extends State<MutationPage>
       inherit: true,
       fontSize: 13 * devicePixelRatio,
       color: Colors.white,
+      // fontWeight:FontWeight.bold
     );
     TextStyle style15White = new TextStyle(
       inherit: true,
       fontSize: 8 * devicePixelRatio,
       color: Colors.white,
+      fontWeight:FontWeight.bold
     );
     TextStyle style15 = new TextStyle(
       inherit: true,
@@ -83,7 +84,7 @@ class _MutationPageState extends State<MutationPage>
       return Scaffold(
         body: prefix0.RefreshIndicator(
           onRefresh: () async {
-              presenter.getMutations( startDate, endDate );
+            presenter.getMutations(startDate, endDate);
           },
           child: Container(
             // height: MediaQuery.of(context).size.height,
@@ -96,31 +97,22 @@ class _MutationPageState extends State<MutationPage>
                         children: [
                           Container(
                             height:
-                                MediaQuery.of(context).size.height / 3 - 100,
+                                MediaQuery.of(context).size.height / 3 -50,
                             width: MediaQuery.of(context).size.width,
                             child: Container(
-                              color: AppColor.PRIMARY,
-                              // child: new Image.asset(
-                              //   'images/sapi.jpg',
-                              //   fit: BoxFit.cover,
-                              // ),
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/images/background.png'),
+                                    fit: BoxFit.fitWidth),
+                              ),
                             ),
                           ),
                           Container(
                             height:
-                                MediaQuery.of(context).size.height / 3 - 100,
+                                MediaQuery.of(context).size.height / 3 -50 ,
                             width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  const Color(0xCC000000),
-                                  const Color(0x00000000),
-                                  const Color(0xCC000000),
-                                ],
-                              ),
-                            ),
+                            color: Color.fromARGB(120, 0, 0, 0),
                           ),
                           Positioned(
                             left: 10.0,
@@ -152,19 +144,18 @@ class _MutationPageState extends State<MutationPage>
                                 final List<DateTime> picked =
                                     await DateRagePicker.showDatePicker(
                                         context: context,
-                                        initialFirstDate: startDate ,
+                                        initialFirstDate: startDate,
                                         initialLastDate: endDate,
-
                                         firstDate: new DateTime(2015),
                                         lastDate: new DateTime(2025));
                                 if (picked != null && picked.length == 2) {
-                                  startDate   = picked[0];
-                                  endDate     = picked[1];
-                                  presenter.getMutations( startDate, endDate );
+                                  startDate = picked[0];
+                                  endDate = picked[1];
+                                  presenter.getMutations(startDate, endDate);
                                 }
                               },
                               child: Container(
-                                color: Colors.blueGrey,
+                                color: AppColor.PRIMARY,
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
@@ -173,7 +164,7 @@ class _MutationPageState extends State<MutationPage>
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Text(
-                                        "${timeFormatter.format( startDate )}",
+                                        "${timeFormatter.format(startDate)}",
                                         style: style15White,
                                       ),
                                       SizedBox(
@@ -187,7 +178,7 @@ class _MutationPageState extends State<MutationPage>
                                         width: 8,
                                       ),
                                       Text(
-                                        "${timeFormatter.format( endDate )}",
+                                        "${timeFormatter.format(endDate)}",
                                         style: style15White,
                                       ),
                                     ],
@@ -216,6 +207,11 @@ class _MutationPageState extends State<MutationPage>
                                         ),
                                       ],
                                     ),
+                                    Container(
+                                          width: 2,
+                                          height: 50,
+                                          color: Color.fromARGB(255, 158, 155, 152),
+                                        ),
                                     Column(
                                       children: <Widget>[
                                         Text(
@@ -235,12 +231,15 @@ class _MutationPageState extends State<MutationPage>
                             SizedBox(
                               height: 12,
                             ),
-                            Column(
-                              children: account.mutations.map((i) {
-                                return Builder(builder: (BuildContext context) {
-                                  return MutationWidget(mutation: i);
-                                });
-                              }).toList(),
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Column(
+                                children: account.mutations.map((i) {
+                                  return Builder(builder: (BuildContext context) {
+                                    return MutationWidget(mutation: i);
+                                  });
+                                }).toList(),
+                              ),
                             ),
                             // AAAAAAAAAAAAAAAAAAAAAAAAAAA
                           ],

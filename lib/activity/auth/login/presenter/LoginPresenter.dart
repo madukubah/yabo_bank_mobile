@@ -26,14 +26,14 @@ class LoginPresenter< V extends LoginMVPView , I extends LoginMVPInteractor > ex
         print( loginResponse );
         
         if( loginResponse == null ) return;
-
-        this.getView().showMessage( loginResponse.message, loginResponse.success );
         this.getView().hideProgress();  
         if( loginResponse.success )
         {
             interactor.updateUserInSharedPref( loginResponse, LoggedInMode.LOGGED_IN_MODE_SERVER );
             this.getView().openMainAvtivity();  
+            return;
         }
+        this.getView().showMessage( loginResponse.message, loginResponse.success );
       });
   }
 

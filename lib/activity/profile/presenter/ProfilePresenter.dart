@@ -5,8 +5,6 @@ import 'package:yabo_bank/activity/profile/interactor/ProfileMVPInteractor.dart'
 import 'package:yabo_bank/activity/profile/view/ProfileMVPView.dart';
 import 'package:yabo_bank/base/presenter/BasePresenter.dart';
 import 'package:yabo_bank/data/network/response/ApiResponse.dart';
-import 'package:yabo_bank/data/network/response/LoginResponse.dart';
-import 'package:yabo_bank/model/User.dart';
 import 'package:yabo_bank/util/AppConstants.dart';
 
 import 'ProfileMVPPresenter.dart';
@@ -18,9 +16,12 @@ class ProfilePresenter < V extends ProfileMVPView , I extends ProfileMVPInteract
 
   @override
   void getUser() async {
+    this.getView().showProgress();
+
     interactor.doGetUser(  ).then( ( ApiResponse response ){
         if( response.data == null ) return;
 
+        interactor.updateUserInSharedPref( response, LoggedInMode.LOGGED_IN_MODE_SERVER );
         this.getView().onUserLoad( response.data );
     });
   }

@@ -14,7 +14,7 @@ class FIXLImage
     if (image != null) {
       _image.Image imageFile = _image.decodeJpg(image.readAsBytesSync());
 
-      _image.Image thumbnail = _image.copyResize(imageFile, height : 400);
+      _image.Image thumbnail = _image.copyResize(imageFile, height : 300);
 
       Directory appDocDirectory = await getApplicationDocumentsDirectory();
 

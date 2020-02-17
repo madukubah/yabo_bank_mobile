@@ -17,9 +17,10 @@ class BaseInteractor extends MVPInteractor
   @override
   Future< bool > isUserLoggedIn() async {
     return apiHelper.performGetUser(  ).then( ( ApiResponse response ){
-      if( response.success != null )
+      if( response.success != null ){
+          this.updateUserInSharedPref(response, LoggedInMode.LOGGED_IN_MODE_SERVER);
           return response.success;
-
+      }
       return false;
     } );
     // return  this.preferenceHelper.getCurrentUserLoggedInMode() != LoggedInMode.LOGGED_IN_MODE_LOGGED_OUT.index;
@@ -41,6 +42,9 @@ class BaseInteractor extends MVPInteractor
     {
         if( ! ( user.token == '' || user.token == null ) )
             preferenceHelper.setAccessToken( user.token );
+
+        if( ! ( user.status == null ) )
+            preferenceHelper.setCurrentCustomerStatus( user.status );
             
         preferenceHelper.setCurrentUserLoggedInMode( loggedInMode );
         preferenceHelper.setCurrentUserId( user.id );
@@ -54,5 +58,6 @@ class BaseInteractor extends MVPInteractor
         preferenceHelper.setCurrentUserableType( user.userable_type );
         preferenceHelper.setCurrentUserableId( user.userable_id );
     }
+
   }
 }
