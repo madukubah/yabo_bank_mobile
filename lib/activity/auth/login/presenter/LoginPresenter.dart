@@ -23,8 +23,6 @@ class LoginPresenter< V extends LoginMVPView , I extends LoginMVPInteractor > ex
       interactor.doServerLoginApiCall( 
            email,  password
       ).then(( ApiResponse loginResponse ){
-        print( loginResponse );
-        
         if( loginResponse == null ) return;
         this.getView().hideProgress();  
         if( loginResponse.success )

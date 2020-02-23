@@ -19,7 +19,7 @@ abstract class ApiHelper
   Future<ApiResponse> performGetMutations( String startDate, String endDate );
 
   Future<ApiResponse> performGetRequests(  );
-  Future<ApiResponse> performCreateRequests(  dynamic formData, File image );
+  Future<ApiResponse> performCreateRequests(  Map<String, String> formData, File image );
   Future<ApiResponse> performDeleteRequests(  int requestId );
 
   Future<ApiResponse> performGetPriceLists(  );

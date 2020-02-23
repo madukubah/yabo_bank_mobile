@@ -55,19 +55,22 @@ class _MutationPageState extends State<MutationPage>
 
     TextStyle style15BoldWhite = new TextStyle(
       inherit: true,
-      fontSize: 13 * devicePixelRatio,
+      // fontSize: 13 * devicePixelRatio,
+      fontSize: 28,
       color: Colors.white,
       // fontWeight:FontWeight.bold
     );
     TextStyle style15White = new TextStyle(
       inherit: true,
-      fontSize: 8 * devicePixelRatio,
+      // fontSize: 8 * devicePixelRatio,
+      fontSize: 16,
       color: Colors.white,
       fontWeight:FontWeight.bold
     );
     TextStyle style15 = new TextStyle(
       inherit: true,
-      fontSize: 8 * devicePixelRatio,
+      // fontSize: 8 * devicePixelRatio,
+      fontSize: 16,
       color: Colors.black,
     );
 
@@ -103,7 +106,7 @@ class _MutationPageState extends State<MutationPage>
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                     image: AssetImage(
-                                        'assets/images/background.png'),
+                                        'assets/images/balance.png'),
                                     fit: BoxFit.fitWidth),
                               ),
                             ),
@@ -115,15 +118,16 @@ class _MutationPageState extends State<MutationPage>
                             color: Color.fromARGB(120, 0, 0, 0),
                           ),
                           Positioned(
-                            left: 10.0,
-                            bottom: 30,
+                            left: 0,
+                            right: 0,
+                            top: 45,
                             child: Container(
                                 // color: Colors.pink,
                                 height: 100.0,
                                 width: MediaQuery.of(context).size.width,
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
                                     Text(
                                       "Saldo : Rp. ${formatter.format(account.balance)}",

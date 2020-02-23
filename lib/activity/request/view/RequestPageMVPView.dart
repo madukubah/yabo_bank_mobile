@@ -1,7 +1,7 @@
 import 'package:yabo_bank/base/view/MVPView.dart';
 import 'package:yabo_bank/model/ProcessedRequest.dart';
 import 'package:yabo_bank/model/Request.dart';
-// import 'package:yabo_bank/model/Group.dart';
+// import 'package:customer/model/Group.dart';
 
 abstract class RequestPageMVPView extends MVPView {
   void showMessage( String message, int status );

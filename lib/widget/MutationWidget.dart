@@ -16,7 +16,8 @@ class MutationWidget extends StatelessWidget {
     double devicePixelRatio = queryData.devicePixelRatio;
     TextStyle style15White = new TextStyle(
       inherit: true,
-      fontSize: 8 * devicePixelRatio,
+      // fontSize: 8 * devicePixelRatio,
+      fontSize: 14,
       color: Colors.white,
       fontWeight:FontWeight.bold
     );
@@ -28,7 +29,8 @@ class MutationWidget extends StatelessWidget {
 
     TextStyle style15 = new TextStyle(
       inherit: true,
-      fontSize: 8 * devicePixelRatio,
+      // fontSize: 8 * devicePixelRatio,
+      fontSize: 14,
       color: statusColor,
     );
     var timeFormatter = new DateFormat('dd MMM yyyy');
@@ -68,7 +70,8 @@ class MutationWidget extends StatelessWidget {
                     "${mutation.description}",
                     style: TextStyle(
                       inherit: true,
-                      fontSize: 8 * devicePixelRatio,
+                      // fontSize: 8 * devicePixelRatio,
+                      fontSize: 14,
                       color: Colors.black,
                     ),
                   ),

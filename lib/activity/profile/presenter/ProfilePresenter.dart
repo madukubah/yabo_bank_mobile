@@ -42,13 +42,13 @@ class ProfilePresenter < V extends ProfileMVPView , I extends ProfileMVPInteract
       }else{
         this.getUser();
       }
+      this.getView().hideProgress();
 
       if( response.success )   
         this.getView().showMessage(  response.message, 1 );
       else
         this.getView().showMessage(  response.message, 0 );
 
-      this.getView().hideProgress();
     } );
   }
 
@@ -66,13 +66,13 @@ class ProfilePresenter < V extends ProfileMVPView , I extends ProfileMVPInteract
           }else{
             this.getUser();
           }
+          this.getView().hideProgressCircle();
           
           if( response.success )   
             this.getView().showMessage(  response.message, 1 );
           else
             this.getView().showMessage(  response.message, 0 );
           
-          this.getView().hideProgressCircle();
     });
   }
 
@@ -90,13 +90,13 @@ class ProfilePresenter < V extends ProfileMVPView , I extends ProfileMVPInteract
           }else{
             this.getUser();
           }
+          this.getView().hideProgressCircle();
           
           if( response.success )   
             this.getView().showMessage(  response.message, 1 );
           else
             this.getView().showMessage(  response.message, 0 );
           
-          this.getView().hideProgressCircle();
     });
   } 
 }

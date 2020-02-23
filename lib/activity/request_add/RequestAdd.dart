@@ -8,7 +8,7 @@ import 'package:yabo_bank/activity/map/MapSearch.dart';
 import 'package:yabo_bank/activity/request_add/presenter/RequestAddPresenter.dart';
 import 'package:yabo_bank/activity/request_add/view/RequestAddMVPView.dart';
 import 'package:flutter/material.dart';
-// import 'package:yabo_bank/data/network/ApiEndPoint.dart';
+// import 'package:customer/data/network/ApiEndPoint.dart';
 import 'package:yabo_bank/data/network/AppApiHelper.dart';
 import 'package:yabo_bank/data/preferences/AppPreferenceHelper.dart';
 import 'package:yabo_bank/model/PriceList.dart';
@@ -28,7 +28,7 @@ class RequestAdd extends StatefulWidget {
 
 class _RequestAddState extends State<RequestAdd> implements RequestAddMVPView {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
-
+  LatLng centerPoint;
   GoogleMapController mapController;
 
   final LatLng _center = const LatLng(-3.9850467, 122.5129742);
@@ -60,6 +60,7 @@ class _RequestAddState extends State<RequestAdd> implements RequestAddMVPView {
     super.initState();
     presenter.getPriceLists();
     getPermission();
+    centerPoint = _center;
   }
 
   getPermission() async {
@@ -74,14 +75,9 @@ class _RequestAddState extends State<RequestAdd> implements RequestAddMVPView {
 
   void refresh() async {
     final center = await getUserLocation();
-    print( 'center COORDINATES = $center' );
-    mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: center == null ? LatLng(0, 0) : center, zoom: 15.0)));
-    setState(() {
-      Map<String, Marker> point = {'info': Marker( position: center, markerId: MarkerId('currentLocation') ) };
-      _markers.addAll( point );
-    });
-    // getNearbyPlaces(center);
+    centerPoint = center;
+
+    setMapPoint( centerPoint );
   }
 
   void _onMapCreated(GoogleMapController controller) async {
@@ -115,15 +111,7 @@ class _RequestAddState extends State<RequestAdd> implements RequestAddMVPView {
           borderRadius: BorderRadius.circular(10),
         ),
         onPressed: () {
-          presenter.createRequests(priceLists, this._imageFile);
-          // if (_fbKey.currentState.saveAndValidate()) {
-          //   print(_fbKey.currentState.value);
-          //   presenter.createRequests(
-          //       _fbKey.currentState.value, this._imageFile);
-          // } else {
-          //   print(_fbKey.currentState.value);
-          //   print("validation failed");
-          // }
+          presenter.createRequests(priceLists, this._imageFile, centerPoint);
         },
         padding: EdgeInsets.all(12),
         color: AppColor.PRIMARY,
@@ -142,13 +130,11 @@ class _RequestAddState extends State<RequestAdd> implements RequestAddMVPView {
       );
     else
       return Scaffold(
-        // backgroundColor: Colors.black26,
         appBar: new AppBar(
           backgroundColor: AppColor.PRIMARY,
           title: new Text("Buat Penjemputan"),
         ),
         body: Container(
-          // height: MediaQuery.of(context).size.height,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: CustomScrollView(
@@ -363,6 +349,7 @@ class _RequestAddState extends State<RequestAdd> implements RequestAddMVPView {
             ),
           ),
         ),
+        
       );
   }
 
@@ -531,11 +518,23 @@ class _RequestAddState extends State<RequestAdd> implements RequestAddMVPView {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MapSearch(),
+        builder: (context) => MapSearch( mapPoint: centerPoint ),
       ),
     );
     if (result != null) {
       print(result);
+      centerPoint = result;
+      setMapPoint( centerPoint );
     }
+  }
+
+  void setMapPoint( LatLng position ){
+    _markers.clear();
+    mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: position == null ? LatLng(0, 0) : position, zoom: 15.0)));
+    setState(() {
+      Map<String, Marker> point = {'info': Marker( position: position, markerId: MarkerId('currentLocation') ) };
+      _markers.addAll( point );
+    });
   }
 }

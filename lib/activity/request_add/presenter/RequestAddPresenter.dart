@@ -11,6 +11,8 @@ import 'package:yabo_bank/model/PriceList.dart';
 import 'RequestAddMVPPresenter.dart';
 import 'package:image/image.dart' as _image;
 import 'package:path_provider/path_provider.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 
 class RequestAddPresenter < V extends RequestAddMVPView , I extends RequestAddMVPInteractor > extends BasePresenter< V, I > implements RequestAddMVPPresenter<V, I>
 {
@@ -27,7 +29,7 @@ class RequestAddPresenter < V extends RequestAddMVPView , I extends RequestAddMV
   }
 
   @override
-  void createRequests(List<PriceList> priceLists, File image) {
+  void createRequests(List<PriceList> priceLists, File image, LatLng position) {
     
     if( ! checkPriceList( priceLists ) ){
       this.getView().showMessage(  'Input Jenis Sampah Beserta Perkiraan Berat !', 0 );
@@ -39,7 +41,9 @@ class RequestAddPresenter < V extends RequestAddMVPView , I extends RequestAddMV
       return;
     }
     Map<String, String> formData = {
-      'info': this.buildInfo(priceLists)
+      'info'    : this.buildInfo(priceLists),
+      'latitude': '${position.latitude}',
+      'longitude': '${position.longitude}',
     };
     this.getView().showProgress(  );
     interactor.doCreateRequests( formData, image ).then( ( ApiResponse response ){
@@ -83,7 +87,7 @@ class RequestAddPresenter < V extends RequestAddMVPView , I extends RequestAddMV
 
       Directory appDocDirectory = await getApplicationDocumentsDirectory();
 
-      new Directory(appDocDirectory.path + '/yabo_bank').create(recursive: true)
+      new Directory(appDocDirectory.path + '/customer').create(recursive: true)
           // The created directory is returned as a Future.
           .then((Directory directory) {
         var name = DateTime.now().millisecondsSinceEpoch;

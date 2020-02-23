@@ -107,20 +107,21 @@ class _ProfileState extends State<Profile>
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 new Container(
-                                    width: 140.0,
-                                    height: 140.0,
-                                    decoration: new BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: new DecorationImage(
-                                        image: (imageProfile ==
-                                                "assets/images/as.png")
-                                            ? new ExactAssetImage(imageProfile)
-                                            : new NetworkImage(
-                                                ApiEndPoint.USER_PROFILE_PHOTO +
-                                                    "/$imageProfile"),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),),
+                                  width: 140.0,
+                                  height: 140.0,
+                                  decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: new DecorationImage(
+                                      image: (imageProfile ==
+                                              "assets/images/as.png")
+                                          ? new ExactAssetImage(imageProfile)
+                                          : new NetworkImage(
+                                              ApiEndPoint.USER_PROFILE_PHOTO +
+                                                  "/$imageProfile"),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                             Padding(
@@ -372,19 +373,71 @@ class _ProfileState extends State<Profile>
   }
 
   @override
-  void showMessage(String message, int status) {
+  Future<void> showMessage(String message, int status) {
     List<Color> messageColor = [Colors.red, Colors.green];
-    setState(() {
-      this.message = Center(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-          child: Text(
-            "$message",
-            style: TextStyle(color: messageColor[status]),
+    List<String> messageInfo = ['Oops !', 'Berhasil !'];
+    List<Icon> messageIcon = [
+      Icon(
+        Icons.warning,
+        color: messageColor[status],
+      ),
+      Icon(
+        Icons.check,
+        color: messageColor[status],
+      )
+    ];
+    return showDialog<void>(
+      context: context,
+      // barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          title: Row(
+            children: <Widget>[
+              messageIcon[ status ],
+              SizedBox(
+                width: 8,
+              ),
+              Text(
+                messageInfo[status],
+                maxLines: 2,
+                style: TextStyle(
+                    fontSize: 16,
+                    color: messageColor[status],
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
-        ),
-      );
-    });
+          content: SingleChildScrollView(
+            child: Row(
+              children: <Widget>[
+                Flexible(
+                  child: Text(
+                    '$message',
+                    maxLines: 2,
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    // setState(() {
+    //   this.message = Center(
+    //     child: Padding(
+    //       padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+    //       child: Text(
+    //         "$message",
+    //         style: TextStyle(color: messageColor[status]),
+    //       ),
+    //     ),
+    //   );
+    // });
   }
 
   @override

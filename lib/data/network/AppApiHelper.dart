@@ -263,8 +263,8 @@ class AppApiHelper extends ApiHelper {
 
   @override
   Future<ApiResponse> performCreateRequests(
-      dynamic formData, File image) async {
-    Map<String, String> form = {'info': formData['info']};
+      Map<String, String> formData, File image) async {
+    // Map<String, String> form = {'info': formData['info']};
     Map<String, String> requestHeaders = {
       'Accept': 'application/json',
       'Authorization':
@@ -282,7 +282,7 @@ class AppApiHelper extends ApiHelper {
 
     imageUploadRequest.headers.addAll(requestHeaders);
     imageUploadRequest.files.add(file);
-    imageUploadRequest.fields.addAll(form);
+    imageUploadRequest.fields.addAll(formData);
 
     try {
       final streamedResponse = await imageUploadRequest.send();

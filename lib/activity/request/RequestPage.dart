@@ -23,7 +23,7 @@ class _RequestPageState extends State<RequestPage>
     implements RequestPageMVPView {
   RequestPagePresenter<RequestPageMVPView, RequestPageMVPInteractor> presenter;
   bool _isLoading = true;
-
+  // LatLng centerPoint;
   List<Request> requests;
   List<ProcessedRequest> processedRequests;
   TabController tabController;
@@ -92,60 +92,49 @@ class _RequestPageState extends State<RequestPage>
                     Tab(
                       // text: "Jemput",
                       icon: (requests.length == 0)
-                          ? Icon(Icons.list)
-                          : new Stack(
-                              alignment: AlignmentDirectional.center,
+                          ? Text("Pesanan") //Icon(Icons.list)
+                          : new Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                  SizedBox(width: 60),
-                                  new Icon(Icons.list),
-                                  new Positioned(
-                                    left: 40.0,
-                                    child: new Stack(
-                                      alignment: AlignmentDirectional.center,
-                                      children: <Widget>[
-                                        new Icon(Icons.brightness_1,
-                                            size: 18.0,
-                                            color: AppColor.PRIMARY),
-                                        Center(
-                                          child: new Text('${requests.length}',
-                                              style: new TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 13.0,
-                                                  fontWeight: FontWeight.w500)),
-                                        )
-                                      ],
-                                    ),
-                                  )
+                                  new Text("Pesanan"),
+                                  new Stack(
+                                    alignment: AlignmentDirectional.center,
+                                    children: <Widget>[
+                                      new Icon(Icons.brightness_1,
+                                          size: 18.0, color: AppColor.PRIMARY),
+                                      Center(
+                                        child: new Text('${requests.length}',
+                                            style: new TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 13.0,
+                                                fontWeight: FontWeight.w500)),
+                                      )
+                                    ],
+                                  ),
                                 ]),
                     ),
                     Tab(
                       // text: "Terkonfirmasi",
                       icon: (processedRequests.length == 0)
-                          ? Icon(Icons.thumb_up)
-                          : new Stack(
-                              alignment: AlignmentDirectional.center,
+                          ? Text("Diproses")
+                          : new Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                  SizedBox(width: 60),
-                                  new Icon(Icons.thumb_up),
-                                  new Positioned(
-                                    left: 40.0,
-                                    child: new Stack(
-                                      alignment: AlignmentDirectional.center,
-                                      children: <Widget>[
-                                        new Icon(Icons.brightness_1,
-                                            size: 18.0,
-                                            color: AppColor.PRIMARY),
-                                        Center(
-                                          child: new Text(
-                                              '${processedRequests.length}',
-                                              style: new TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 13.0,
-                                                  fontWeight: FontWeight.w500)),
-                                        )
-                                      ],
-                                    ),
-                                  )
+                                  new Text("Diproses"),
+                                  new Stack(
+                                    alignment: AlignmentDirectional.center,
+                                    children: <Widget>[
+                                      new Icon(Icons.brightness_1,
+                                          size: 18.0, color: AppColor.PRIMARY),
+                                      Center(
+                                        child: new Text('${processedRequests.length}',
+                                            style: new TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 13.0,
+                                                fontWeight: FontWeight.w500)),
+                                      )
+                                    ],
+                                  ),
                                 ]),
                     ),
                   ],
@@ -162,7 +151,36 @@ class _RequestPageState extends State<RequestPage>
                         presenter.getRequests();
                       },
                       child: requests.length == 0
-                          ? Center(child: Text('Tidak Ada Data'))
+                          ? ListView(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              4 /
+                                              6,
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Center(
+                                          child: Container(
+                                        // color: Colors.pink,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                    1 /
+                                                    4 +
+                                                30,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  'assets/images/no_data.png'),
+                                              fit: BoxFit.fitWidth),
+                                        ),
+                                      ))),
+                                )
+                              ],
+                            )
                           : CustomScrollView(
                               slivers: <Widget>[
                                 SliverList(
@@ -205,7 +223,36 @@ class _RequestPageState extends State<RequestPage>
                         presenter.getRequests();
                       },
                       child: processedRequests.length == 0
-                          ? Center(child: Text('Tidak Ada Data'))
+                          ? ListView(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              4 /
+                                              6,
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Center(
+                                          child: Container(
+                                        // color: Colors.pink,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                    1 /
+                                                    4 +
+                                                30,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  'assets/images/no_data.png'),
+                                              fit: BoxFit.fitWidth),
+                                        ),
+                                      ))),
+                                )
+                              ],
+                            )
                           : CustomScrollView(
                               slivers: <Widget>[
                                 SliverList(
@@ -360,13 +407,25 @@ class _RequestPageState extends State<RequestPage>
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Belum Terverifikasi'),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          title: Text(
+            'Belum Terverifikasi',
+            maxLines: 2,
+            style: TextStyle(
+                fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
+          ),
           content: SingleChildScrollView(
-            child: ListBody(
+            child: Row(
               children: <Widget>[
-                Text(
-                  'Mohon untuk mengupload foto KTP',
-                  style: TextStyle(color: Colors.black),
+                Flexible(
+                  child: Text(
+                    'Mohon untuk mengupload foto KTP',
+                    maxLines: 2,
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
                 ),
               ],
             ),

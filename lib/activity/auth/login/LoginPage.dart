@@ -112,19 +112,6 @@ class _LoginPageState extends State<LoginPage> implements LoginMVPView {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: Stack(children: [
-          // Positioned(
-          //   bottom: 0,
-          //   child: Container(
-          //     // color: Colors.pink,
-          //     height: MediaQuery.of(context).size.height / 4,
-          //     width: MediaQuery.of(context).size.width,
-          //     decoration: BoxDecoration(
-          //       image: DecorationImage(
-          //           image: AssetImage('assets/images/background.png'),
-          //           fit: BoxFit.cover),
-          //     ),
-          //   ),
-          // ),
           Container(
             child: ListView(
               shrinkWrap: true,
@@ -147,35 +134,7 @@ class _LoginPageState extends State<LoginPage> implements LoginMVPView {
                 SizedBox(
                   height: 42,
                 ),
-                // Center(
-                //   child: Text(
-                //     '${AppConstants.APP_NAME}',
-                //     style: TextStyle(
-                //       color: AppColor.PRIMARY,
-                //       fontSize: 12 * devicePixelRatio,
-                //       fontWeight: FontWeight.bold,
-                //     ),
-                //   ),
-                // ),
                 logo,
-                // Center(
-                //   child: Text(
-                //     'SISTEM INFORMASI',
-                //     style: TextStyle(
-                //       color: AppColor.PRIMARY,
-                //       fontSize: 10 * devicePixelRatio,
-                //     ),
-                //   ),
-                // ),
-                // Center(
-                //   child: Text(
-                //     'SAMPAH',
-                //     style: TextStyle(
-                //       color: Colors.black87,
-                //       fontSize: 8 * devicePixelRatio,
-                //     ),
-                //   ),
-                // ),
                 SizedBox(height: 28 ),
                 Visibility(
                   visible: isMessageShowed,
@@ -197,17 +156,17 @@ class _LoginPageState extends State<LoginPage> implements LoginMVPView {
                 Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                   loginButton,
                 ]),
-                registerLabel,
                 Container(
                   // color: Colors.pink,
-                  height: MediaQuery.of(context).size.height / 4,
+                  height: MediaQuery.of(context).size.height * 1/4 + 30,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage('assets/images/background.png'),
-                        fit: BoxFit.fitWidth),
+                        image: AssetImage('assets/images/login.png'),
+                        fit: BoxFit.fill),
                   ),
                 ),
+                registerLabel,
               ],
             ),
           ),
@@ -242,13 +201,51 @@ class _LoginPageState extends State<LoginPage> implements LoginMVPView {
   }
 
   @override
-  void showMessage(String message, bool status) {
-    List<Color> messageColor = [Colors.red, Colors.green];
-    setState(() {
-      this.message = message;
-      this.isMessageShowed = true;
-      this.messageColor = messageColor[0];
-    });
+  Future<void> showMessage(String message, bool status) {
+    return showDialog<void>(
+      context: context,
+      // barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          title: Row(
+            children: <Widget>[
+              Icon(
+                Icons.warning,
+                color: Colors.red,
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              Text(
+                'Oops !',
+                maxLines: 2,
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          content: SingleChildScrollView(
+            child: Row(
+              children: <Widget>[
+                Flexible(
+                  child: Text(
+                    '$message',
+                    maxLines: 2,
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override

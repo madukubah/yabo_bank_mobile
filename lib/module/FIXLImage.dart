@@ -18,7 +18,7 @@ class FIXLImage
 
       Directory appDocDirectory = await getApplicationDocumentsDirectory();
 
-      new Directory(appDocDirectory.path + '/yabo_bank').create(recursive: true)
+      new Directory(appDocDirectory.path + '/customer').create(recursive: true)
           // The created directory is returned as a Future.
           .then((Directory directory) {
         var name = DateTime.now().millisecondsSinceEpoch;
