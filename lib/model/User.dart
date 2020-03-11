@@ -12,6 +12,7 @@ class User {
   final int userable_id;
   final int status;
   final String token;
+  int balance;
 
   User(
       {
@@ -28,6 +29,7 @@ class User {
         this.userable_id,
         this.status,
         this.token,
+        this.balance = 0 ,
       });
 
   User.fromMap(Map<String, dynamic> map)
@@ -43,5 +45,6 @@ class User {
         userable_type   = map['userable_type'] ,
         userable_id     = map['userable_id'] ,
         status          = ( map['status'] == null ) ? null: map['status'] ,
+        balance         = ( map['balance'] == null ) ? 0: map['balance'] ,
         token           = map['token'] ;
 }

@@ -23,6 +23,7 @@ abstract class ApiHelper
   Future<ApiResponse> performDeleteRequests(  int requestId );
 
   Future<ApiResponse> performGetPriceLists(  );
-
-
+  Future<ApiResponse> performGetRubbishSummary(  );
+  Future<ApiResponse> performGetPromotions(  );
+  Future<ApiResponse> performGetNews(  );
 }

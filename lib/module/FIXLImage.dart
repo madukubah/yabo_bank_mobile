@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:image/image.dart' as _image;
+import 'package:mime/mime.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -12,7 +13,14 @@ class FIXLImage
     File image = await ImagePicker.pickImage(source: source);
     
     if (image != null) {
-      _image.Image imageFile = _image.decodeJpg(image.readAsBytesSync());
+      final mimeTypeData = 
+        lookupMimeType(image.path, headerBytes: [0xFF, 0xD8]).split('/');
+      List<String> jgp = [ 'jpg', 'JPEG', 'jpeg', 'JPG' ];
+      _image.Image imageFile ;
+      if( jgp.contains( mimeTypeData[1] ) )
+        imageFile = _image.decodeJpg(image.readAsBytesSync());
+      else
+        imageFile = _image.decodePng(image.readAsBytesSync());
 
       _image.Image thumbnail = _image.copyResize(imageFile, height : 300);
 

@@ -3,9 +3,12 @@ import 'dart:io';
 
 import 'package:yabo_bank/model/Account.dart';
 import 'package:yabo_bank/model/Mutation.dart';
+import 'package:yabo_bank/model/News.dart';
 import 'package:yabo_bank/model/PriceList.dart';
 import 'package:yabo_bank/model/ProcessedRequest.dart';
+import 'package:yabo_bank/model/Promotion.dart';
 import 'package:yabo_bank/model/Request.dart';
+import 'package:yabo_bank/model/RubbishSummary.dart';
 import 'package:yabo_bank/util/fetch_data_exception.dart';
 import 'package:mime/mime.dart';
 
@@ -440,6 +443,105 @@ class AppApiHelper extends ApiHelper {
         }).toList(),
       );
     });
+  }
+
+  @override
+  Future<ApiResponse> performGetRubbishSummary() {
+    Map<String, String> requestHeaders = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization':
+          'Bearer ${AppPreferenceHelper.getInstance().getAccessToken()}'
+    };
+    return http
+        .get(
+      ApiEndPoint.GET_RUBBISH_SUMMARY,
+      headers: requestHeaders,
+    )
+        .then((http.Response response) {
+      final String jsonBody = response.body;
+      final statusCode = response.statusCode;
+      if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
+        return new ApiResponse(
+            success: false, message: '${response.reasonPhrase}', data: null);
+      }
+      final container = JsonDecoder().convert(jsonBody);
+      List<dynamic> rubbishSummaries = container['data'];
+      return new ApiResponse(
+        success: container['success'],
+        message: container['message'],
+        data: rubbishSummaries.map((raw) {
+          return RubbishSummary.fromMap(raw);
+        }).toList(),
+      );
+    });
+  }
+
+  @override
+  Future<ApiResponse> performGetPromotions() {
+    Map<String, String> requestHeaders = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization':
+          'Bearer ${AppPreferenceHelper.getInstance().getAccessToken()}'
+    };
+    return http
+        .get(
+      ApiEndPoint.GET_PROMOTION,
+      headers: requestHeaders,
+    )
+        .then((http.Response response) {
+      final String jsonBody = response.body;
+      final statusCode = response.statusCode;
+      if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
+        return new ApiResponse(
+            success: false, message: '${response.reasonPhrase}', data: null);
+      }
+      // print( jsonBody );
+      final container = JsonDecoder().convert(jsonBody);
+      List<dynamic> promotions = container['data'];
+      return new ApiResponse(
+        success: container['success'],
+        message: container['message'],
+        data: promotions.map((raw) {
+          return Promotion.fromMap(raw);
+        }).toList(),
+      );
+    });
+  }
+
+  @override
+  Future<ApiResponse> performGetNews() {
+    Map<String, String> requestHeaders = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization':
+          'Bearer ${AppPreferenceHelper.getInstance().getAccessToken()}'
+    };
+    return http
+        .get(
+      ApiEndPoint.GET_NEWS,
+      headers: requestHeaders,
+    )
+        .then((http.Response response) {
+      final String jsonBody = response.body;
+      final statusCode = response.statusCode;
+      if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
+        return new ApiResponse(
+            success: false, message: '${response.reasonPhrase}', data: null);
+      }
+      print( jsonBody );
+      final container = JsonDecoder().convert(jsonBody);
+      List<dynamic> news = container['data']['data'];
+      return new ApiResponse(
+        success: container['success'],
+        message: container['message'],
+        data: news.map((raw) {
+          return News.fromMap(raw);
+        }).toList(),
+      );
+    });
+
   }
   
 }

@@ -16,6 +16,8 @@ class ApiEndPoint
 
   static const USER_PROFILE_PHOTO = ASSETS_URL+"uploads/users/";
   static const CUSTOMER_IDENTITY_PHOTO = ASSETS_URL+"uploads/identity_photo/";
+  static const IKLAN_PPHOTO = ASSETS_URL+"uploads/iklan/";
+  static const NEWS_IMAGE = ASSETS_URL+"uploads/news/";
 
   static const GET_MUTATIONS = BASE_URL+"mutations";
   static const GET_REQUEST = BASE_URL+"requests";
@@ -23,6 +25,10 @@ class ApiEndPoint
   static const DELETE_REQUEST = BASE_URL+"requests";
 
   static const GET_PRICELIST  = BASE_URL+"pricelists";
+
+  static const GET_RUBBISH_SUMMARY  = BASE_URL+"rubbish_summary";
+  static const GET_PROMOTION  = BASE_URL+"promotions";
+  static const GET_NEWS  = BASE_URL+"news";
 
 
 }

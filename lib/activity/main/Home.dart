@@ -1,4 +1,5 @@
 import 'package:url_launcher/url_launcher.dart';
+import 'package:yabo_bank/activity/feed/Feed.dart';
 import 'package:yabo_bank/activity/main/presenter/HomePresenter.dart';
 import 'package:yabo_bank/activity/main/view/HomeMVPView.dart';
 import 'package:yabo_bank/activity/mutation/MutationPage.dart';
@@ -35,7 +36,7 @@ class _HomeState extends State<Home>
   void initState() {
     super.initState();
     // Initialize the Tab Controller
-    controller = TabController(length: 3, vsync: this);
+    controller = TabController(length: 4, vsync: this);
     controller.addListener(_handleTabSelection);
   }
 
@@ -51,8 +52,9 @@ class _HomeState extends State<Home>
       appBar: new AppBar(
         backgroundColor: AppColor.PRIMARY,
         title: new Text("${AppConstants.APP_NAME}"),
+        elevation: 0.0,
         centerTitle: true,
-        actions: controller.index != 2
+        actions: controller.index != 3
             ? null
             : <Widget>[
                 IconButton(
@@ -72,8 +74,8 @@ class _HomeState extends State<Home>
       body: TabBarView(
         // physics: NeverScrollableScrollPhysics(),
         // Add tabs as widgets
-        children: <Widget>[MutationPage(), RequestPage(), Profile()],
-        // set the controller
+        children: <Widget>[ Feed(), RequestPage(), MutationPage(), Profile()],
+        // set the controller 
         controller: controller,
       ),
       bottomNavigationBar: Container(
@@ -97,12 +99,16 @@ class _HomeState extends State<Home>
             unselectedItemColor: Color.fromARGB(255, 158, 155, 152),
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: Icon(Icons.credit_card),
-                title: Text('Mutasi'),
+                icon: Icon(Icons.home),
+                title: Text('Home'),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.motorcycle),
                 title: Text('Penjemputan'),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.credit_card),
+                title: Text('Mutasi'),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
